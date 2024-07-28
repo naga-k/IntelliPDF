@@ -40,7 +40,7 @@ export default async function Home() {
             </>
           )}
         </div>
-        <p className="max-w-xl mt-2 text-lg text-slate-800">
+        <p className="max-w-xl mt-2 text-lg text-gray-100">
           Join million of professionals to instantly get their answers from AI
         </p>
         <div className="w-full mt-4">

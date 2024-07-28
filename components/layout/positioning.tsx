@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Positioning: FC<PropsWithChildren<Props>> = ({ children, bgColor = null }): ReactElement => {
-  const bg = bgColor ? bgColor : "bg-gradient-to-r from-indigo-300 to-purple-400"
+  const bg = bgColor ? bgColor : "bg-gradient-to-r from-blue-700 to-blue-800"
 
   return (
     <div className={cn("relative w-screen min-h-screen", bg)}>
