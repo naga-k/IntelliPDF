@@ -20,6 +20,11 @@ Welcome to the **IntelliPDF** application! This app allows users to upload a PDF
 - **Vector Database**: [Pinecone DB](https://www.pinecone.io/)
 - **Relational Database**: [Neon DB](https://neon.tech/)
 
+## Architecture
+
+![IntelliPDF Architecture](architecture.png)
+
+
 ## Getting Started
 
 ### Prerequisites
