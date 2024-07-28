@@ -1,28 +1,39 @@
-import { GeistSans } from "geist/font/sans";
+import type { Metadata } from "next";
+import { ClerkProvider } from '@clerk/nextjs'
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/Provider";
+import { Toaster } from "react-hot-toast"
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
-};
+export const metadata: Metadata = {
+  title: 'IntelliPDF',
+  icons: {
+    icon: [
+      {
+        url: '/bot.ico',
+        href: '/bot.ico',
+      },
+    ],
+  },
+}
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
-      </body>
-    </html>
+    <ClerkProvider>
+      <Providers>
+        <html lang="en">
+          <body className={inter.className}>
+            {children}
+            <Toaster />
+          </body>
+        </html>
+      </Providers>
+    </ClerkProvider>
   );
 }
