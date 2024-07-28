@@ -68,12 +68,6 @@ Welcome to the **IntelliPDF** application! This app allows users to upload a PDF
     Create a `.env.local` file in the root directory and add the following:
 
     ```plaintext
-    NEXT_PUBLIC_AWS_ACCESS_KEY_ID=your_aws_access_key_id
-    NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY=
-    NEXT_PUBLIC_AWS_S3_BUCKET_NAME=your_s3_bucket_name
-    NEXT_PUBLIC_PINECONE_API_KEY=your_pinecone_api_key
-    NEXT_PUBLIC_PINECONE_ENVIRONMENT=your_pinecone_environment
-    NEXT_PUBLIC_NEON_DB_URL=your_neon_db_url
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publish_key
     CLERK_SECRET_KEY=your_clerk_secret_key
     NEXT_PUBLIC_CLERK_SIGN_IN_URL=sign_in_page
