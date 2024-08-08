@@ -13,6 +13,8 @@ const LoadingMessage = ({ msg }: { msg: string }) => {
   return <p className="text-xs mt-1 py-1 px-3 text-gray-400">{msg}</p>
 }
 
+
+
 const MessageList = ({ messages, isLoading, queryFetchLoading }: Props) => {
   if (!messages) return <></>
 
@@ -41,5 +43,7 @@ const MessageList = ({ messages, isLoading, queryFetchLoading }: Props) => {
     </div>
   )
 }
+
+console.log('MessageList', MessageList);
 
 export default MessageList

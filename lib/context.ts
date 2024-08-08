@@ -1,6 +1,7 @@
 import { PineconeClient } from "@pinecone-database/pinecone"
 import { convertToAscii } from "./utils"
 import { getEmbeddings } from "./embeddings"
+import { cp } from "fs"
 
 type Metadata = {
   text: string,
@@ -12,7 +13,6 @@ export async function getMatchesFromEmbeddings(embeddings: number[], fileKey: st
     const pinecone = new PineconeClient()
     await pinecone.init({
       apiKey: process.env.PINECONE_API!,
-      environment: process.env.PINECONE_REGION!,
     })
     const index = await pinecone.Index('pdfreader')
 

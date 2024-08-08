@@ -46,6 +46,7 @@ export async function downloadFromS3(file_key: string): Promise<string | null> {
       return null;
     }
 
+    console.log('Successfully downloaded from S3:', file_name);
     return file_name;
   } catch (error) {
     console.error('Error downloading from S3:', error);

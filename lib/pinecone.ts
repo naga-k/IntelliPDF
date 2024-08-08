@@ -1,11 +1,13 @@
-import { Pinecone } from "@pinecone-database/pinecone";
+import { Pinecone, PineconeRecord } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3Server";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import md5 from "md5";
-import { Document, RecursiveCharacterTextSplitter } from "@pinecone-database/doc-splitter";
+import {
+  Document,
+  RecursiveCharacterTextSplitter,
+} from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./utils";
-
 type PDFPage = {
   pageContent: string;
   metadata: {
@@ -20,7 +22,7 @@ export const getPineconeClient = () => {
 };
 
 export async function loadS3IntoPinecone(fileKey: string) {
-  // 1. obtain the pdf -> download and read from pdf
+  // 1. obtain the pdf -> downlaod and read from pdf
   console.log("downloading s3 into file system");
   const file_name = await downloadFromS3(fileKey);
   if (!file_name) {
@@ -42,7 +44,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
 
   // Check if the index exists, and create it if it doesn't
   const indexList = await client.listIndexes();
-  if (!indexList.indexes.some((i) => i.name === "pdfreader")) {
+  if (indexList && indexList.indexes && indexList.indexes.some((i) => i.name === "pdfreader")) {
     console.log("creating index");
     await client.createIndex({
       name: "pdfreader",
@@ -84,6 +86,7 @@ async function embedDocument(doc: Document) {
     throw error;
   }
 }
+
 
 async function prepareDocument(page: PDFPage) {
   let { pageContent, metadata } = page;

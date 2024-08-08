@@ -39,7 +39,7 @@ const ChatSidebar = ({ chats, chatId }: Props) => {
       <div className="absolute bottom-4 left-4">
         <div className="flex items-center gap-2 text-sm text-slate-500 flex-wrap">
           <Link href="/">Home</Link>
-          <a href="https://github.com/sid995/IntelliPDF" target={"_blank"}>Source</a>
+          <a href="https://github.com/naga-k/IntelliPDF" target={"_blank"}>Source</a>
         </div>
       </div>
     </div>

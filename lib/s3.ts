@@ -11,7 +11,7 @@ export async function uploadToS3(file: File) {
       },
     });
 
-    const file_key = `uploads/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
+    const file_key = 'uploads/' + Date.now().toString() + file.name.replace(/\s/g, '-');
 
     // Define parameters for the PutObjectCommand
     const params = {
@@ -33,6 +33,7 @@ export async function uploadToS3(file: File) {
       file_key,
       file_name: file.name
     };
+    
 
   } catch (error: any) {
     console.error('Error uploading to S3:', error.message);
@@ -41,6 +42,8 @@ export async function uploadToS3(file: File) {
 }
 
 export function getS3URL(file_key: string) {
-  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_S3_REGION || 'us-east-2'}.amazonaws.com/${file_key}`;
+  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.amazonaws.com/${file_key}`;
+  console.log('S3 URL:', url);
   return url;
 }
+

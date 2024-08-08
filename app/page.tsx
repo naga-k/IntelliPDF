@@ -1,7 +1,7 @@
 import FileUpload from "@/components/FileUpload";
 import { Positioning } from "@/components/layout/positioning";
 import { Button } from "@/components/ui/button"
-import { db } from "@/lib/db";
+import { db } from "@/lib/db/db";
 import { chats } from "@/lib/db/schema";
 import { UserButton } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";

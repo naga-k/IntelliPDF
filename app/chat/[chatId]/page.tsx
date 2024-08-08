@@ -1,7 +1,7 @@
 import ChatComponent from '@/components/ChatComponent';
 import ChatSidebar from '@/components/ChatSidebar';
 import PdfViewer from '@/components/PdfViewer';
-import { db } from '@/lib/db';
+import { db } from '@/lib/db/db';
 import { chats } from '@/lib/db/schema';
 import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
@@ -32,6 +32,8 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
   }
 
   const currentChat = _chats.find((chat) => chat.id === _chatId);
+
+  console.log('currentChat', currentChat);
 
   return (
     <div className="flex max-h-screen overflow-hidden">
