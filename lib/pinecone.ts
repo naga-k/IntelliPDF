@@ -8,6 +8,7 @@ import {
 } from "@pinecone-database/doc-splitter";
 import { getEmbeddings } from "./embeddings";
 import { convertToAscii } from "./utils";
+
 type PDFPage = {
   pageContent: string;
   metadata: {
@@ -22,7 +23,7 @@ export const getPineconeClient = () => {
 };
 
 export async function loadS3IntoPinecone(fileKey: string) {
-  // 1. obtain the pdf -> downlaod and read from pdf
+  // 1. Obtain the PDF -> download and read from PDF
   console.log("downloading s3 into file system");
   const file_name = await downloadFromS3(fileKey);
   if (!file_name) {
@@ -32,22 +33,22 @@ export async function loadS3IntoPinecone(fileKey: string) {
   const loader = new PDFLoader(file_name);
   const pages = (await loader.load()) as PDFPage[];
 
-  // 2. split and segment the pdf
+  // 2. Split and segment the PDF
   const documents = await Promise.all(pages.map(prepareDocument));
 
-  // 3. vectorise and embed individual documents
+  // 3. Vectorize and embed individual documents
   const vectors = await Promise.all(documents.flat().map(embedDocument));
 
-  // 4. upload to pinecone
+  // 4. Upload to Pinecone
   const client = getPineconeClient();
-  const index = client.index("pdfreader");
+  const indexName = "pdfreader";
 
   // Check if the index exists, and create it if it doesn't
   const indexList = await client.listIndexes();
-  if (indexList && indexList.indexes && indexList.indexes.some((i) => i.name === "pdfreader")) {
+  if (!indexList.indexes.some((i) => i.name === indexName)) {
     console.log("creating index");
     await client.createIndex({
-      name: "pdfreader",
+      name: indexName,
       dimension: 1536, // replace with the appropriate dimension for your use case
       spec: {
         serverless: {
@@ -60,6 +61,7 @@ export async function loadS3IntoPinecone(fileKey: string) {
     await new Promise((resolve) => setTimeout(resolve, 60000));
   }
 
+  const index = client.index(indexName);
   const namespace = index.namespace(convertToAscii(fileKey));
 
   console.log("inserting vectors into pinecone");
@@ -87,11 +89,10 @@ async function embedDocument(doc: Document) {
   }
 }
 
-
 async function prepareDocument(page: PDFPage) {
   let { pageContent, metadata } = page;
   pageContent = pageContent.replace(/\n/g, "");
-  // split the docs
+  // Split the docs
   const splitter = new RecursiveCharacterTextSplitter();
   const docs = await splitter.splitDocuments([
     new Document({

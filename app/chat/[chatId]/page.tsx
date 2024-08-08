@@ -33,7 +33,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
 
   const currentChat = _chats.find((chat) => chat.id === _chatId);
 
-  console.log('currentChat', currentChat);
+  // console.log('currentChat', currentChat);
 
   return (
     <div className="flex max-h-screen overflow-hidden">
