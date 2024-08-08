@@ -1,47 +1,46 @@
-/// <reference types="aws-sdk" />
-
-import AWS from "aws-sdk"
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export async function uploadToS3(file: File) {
   try {
-    AWS.config.update({
-      accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
-      secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY
-    })
-    const s3 = new AWS.S3({
-      params: {
-        Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!
+    // Create S3 client with updated configuration
+    const s3Client = new S3Client({
+      region: 'us-east-1',
+      credentials: {
+        accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
       },
-      region: 'us-east-2'
-    })
+    });
 
-    const file_key = 'uploads/' + Date.now().toString() + file.name.replace(/\s/g, '-');
+    const file_key = `uploads/${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
 
+    // Define parameters for the PutObjectCommand
     const params = {
       Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
       Key: file_key,
       Body: file,
-    }
+      // Optional: Set the content type if known
+      ContentType: file.type,
+    };
 
-    const upload = s3.putObject(params).on('httpUploadProgress', evt => {
-      console.log(`uploading to S3 - ${parseInt(((evt.loaded * 100) / evt.total).toString())} %`)
-    }).promise()
+    // Create a PutObjectCommand
+    const command = new PutObjectCommand(params);
 
-    await upload.then(data => {
-      console.log('successfully uploaded to S3 ', file_key)
-    })
+    // Upload file to S3
+    await s3Client.send(command);
+    console.log('Successfully uploaded to S3:', file_key);
 
-    return Promise.resolve({
+    return {
       file_key,
       file_name: file.name
-    })
+    };
 
   } catch (error: any) {
-    throw new Error(error)
+    console.error('Error uploading to S3:', error.message);
+    throw new Error(`Failed to upload file: ${error.message}`);
   }
 }
 
 export function getS3URL(file_key: string) {
-  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.us-east-2.amazonaws.com/${file_key}`
-  return url
+  const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_S3_REGION || 'us-east-2'}.amazonaws.com/${file_key}`;
+  return url;
 }

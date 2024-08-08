@@ -3,10 +3,11 @@ import { Positioning } from "@/components/layout/positioning";
 import { Button } from "@/components/ui/button"
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
-import { UserButton, auth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import { ArrowRight, LogIn } from "lucide-react";
 import Link from "next/link";
+import { auth } from '@clerk/nextjs/server';
 
 export default async function Home() {
   const { userId } = await auth()
